@@ -82,13 +82,29 @@ public class GildedRoseTest {
 	@Test
 	public void agedBrie0DaysQualityIncreaseTest() {
 		GildedRose inn = new GildedRose();
-		inn.setItem(new Item("Aged Brie", 0, 10));
+		inn.setItem(new Item("Aged Brie", 1, 10));
+		inn.oneDay();
+		inn.oneDay();
 		inn.oneDay();
 		
 		List<Item> items = inn.getItems();
 		int quality = items.get(0).getQuality();
 		
-		assertEquals("Failed quality increase at 0 days for Aged Brie", 12, quality);
+		assertEquals("Failed quality increase under 0 days for Aged Brie", 15, quality);
+	}
+	
+	@Test
+	public void agedBrie0DaysQualityLimitTest() {
+		GildedRose inn = new GildedRose();
+		inn.setItem(new Item("Aged Brie", 1, 48));
+		inn.oneDay();
+		inn.oneDay();
+		inn.oneDay();
+		
+		List<Item> items = inn.getItems();
+		int quality = items.get(0).getQuality();
+		
+		assertEquals("Failed quality limit under 0 days for Aged Brie", 50, quality);
 	}
 	
 	@Test
@@ -100,7 +116,7 @@ public class GildedRoseTest {
 		List<Item> items = inn.getItems();
 		int quality = items.get(0).getQuality();
 		
-		assertEquals("Failed quality increase at 50 quality for Aged Brie", 50, quality);
+		assertEquals("Failed quality limit for Aged Brie", 50, quality);
 	}
 	
 	@Test
@@ -119,6 +135,34 @@ public class GildedRoseTest {
 		int quality = items.get(0).getQuality();
 		
 		assertEquals("Failed quality increase for Backstage passes", 14, quality);
+	}
+	
+	@Test
+	public void backstagePassQualityLimitTestUnder11() {
+		GildedRose inn = new GildedRose();
+		inn.setItem(new Item("Backstage passes to a TAFKAL80ETC concert", 11, 48));
+		inn.oneDay();
+		inn.oneDay();
+		inn.oneDay();
+		
+		List<Item> items = inn.getItems();
+		int quality = items.get(0).getQuality();
+		
+		assertEquals("Failed quality limit for Backstage passes under 11 days", 50, quality);
+	}
+	
+	@Test
+	public void backstagePassQualityLimitTestUnder6() {
+		GildedRose inn = new GildedRose();
+		inn.setItem(new Item("Backstage passes to a TAFKAL80ETC concert", 6, 47));
+		inn.oneDay();
+		inn.oneDay();
+		inn.oneDay();
+		
+		List<Item> items = inn.getItems();
+		int quality = items.get(0).getQuality();
+		
+		assertEquals("Failed quality limit for Backstage passes under 6 days", 50, quality);
 	}
 	
 	@Test
@@ -143,5 +187,47 @@ public class GildedRoseTest {
 		int quality = items.get(0).getQuality();
 		
 		assertEquals("Failed quality preservation for Sulfuras", 80, quality);
+	}
+	
+	@Test
+	public void loop0ElementTest() {
+		GildedRose inn = new GildedRose();
+		inn.oneDay();
+		
+		List<Item> items = inn.getItems();
+		assertEquals("Failed loop with 0 elements", 0, items.size());
+	}
+	
+	@Test
+	public void loop1ElementTest() {
+		GildedRose inn = new GildedRose();
+		inn.setItem(new Item("Poop", 10, 10));
+		inn.oneDay();
+		
+		List<Item> items = inn.getItems();
+		assertEquals("Failed loop with 1 element", 1, items.size());
+	}
+	
+	@Test
+	public void loop2ElementTest() {
+		GildedRose inn = new GildedRose();
+		inn.setItem(new Item("Poop", 10, 10));
+		inn.setItem(new Item("Rock", 10, 10));
+		inn.oneDay();
+		
+		List<Item> items = inn.getItems();
+		assertEquals("Failed loop with 2 elements", 2, items.size());
+	}
+	
+	@Test
+	public void loop3ElementTest() {
+		GildedRose inn = new GildedRose();
+		inn.setItem(new Item("Poop", 10, 10));
+		inn.setItem(new Item("Rock", 10, 10));
+		inn.setItem(new Item("Stone", 10, 10));
+		inn.oneDay();
+		
+		List<Item> items = inn.getItems();
+		assertEquals("Failed loop with 3 elements", 3, items.size());
 	}
 }
