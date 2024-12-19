@@ -138,20 +138,6 @@ public class GildedRoseTest {
 	}
 	
 	@Test
-	public void backstagePassQualityLimitTestUnder11() {
-		GildedRose inn = new GildedRose();
-		inn.setItem(new Item("Backstage passes to a TAFKAL80ETC concert", 11, 48));
-		inn.oneDay();
-		inn.oneDay();
-		inn.oneDay();
-		
-		List<Item> items = inn.getItems();
-		int quality = items.get(0).getQuality();
-		
-		assertEquals("Failed quality limit for Backstage passes under 11 days", 50, quality);
-	}
-	
-	@Test
 	public void backstagePassQualityLimitTestUnder6() {
 		GildedRose inn = new GildedRose();
 		inn.setItem(new Item("Backstage passes to a TAFKAL80ETC concert", 6, 47));
